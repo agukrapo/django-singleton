@@ -1,3 +1,5 @@
+This version is merely a fixx to create compartibility with nu versions of Django (starting with Django==1.11.11)
+---
 
 # django-singleton
 
