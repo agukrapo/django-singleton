@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import ugettext as _
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 from django.http import HttpResponseRedirect
 from functools import update_wrapper
 
@@ -39,7 +39,7 @@ class SingletonModelAdmin(admin.ModelAdmin):
                 wrap(self.change_view),
                 {'object_id': '1'},
                 name='%s_%s_changelist' % info),
-            ]
+        ]
         return urlpatterns
 
     def response_change(self, request, obj):
@@ -48,9 +48,10 @@ class SingletonModelAdmin(admin.ModelAdmin):
         """
         opts = obj._meta
 
-        msg = _('%(obj)s was changed successfully.') % {'obj': force_unicode(obj)}
+        msg = _('%(obj)s was changed successfully.') % {'obj': force_text(obj)}
         if request.POST.has_key("_continue"):
-            self.message_user(request, msg + ' ' + _("You may edit it again below."))
+            self.message_user(request, msg + ' ' +
+                              _("You may edit it again below."))
             return HttpResponseRedirect(request.path)
         else:
             self.message_user(request, msg)
